@@ -11,6 +11,7 @@ export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: Breadcrum
             user: { name },
         },
         member: { member_no, photo },
+        app: { url },
     } = usePage<SharedData>().props;
 
     return (
@@ -22,7 +23,7 @@ export function AppSidebarHeader({ breadcrumbs = [] }: { breadcrumbs?: Breadcrum
                 </div>
                 <Link href="/profile" className="flex items-center gap-2" prefetch="click">
                     <Avatar>
-                        <AvatarImage src={photo ?? undefined} />
+                        <AvatarImage src={photo ? `${url}${photo}` : undefined} />
                         <AvatarFallback>{getInitials(name)}</AvatarFallback>
                     </Avatar>
                     <div className="hidden md:block">
