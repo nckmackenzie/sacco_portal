@@ -31,6 +31,10 @@ export interface SharedData {
     name: string;
     quote: { message: string; author: string };
     auth: Auth;
+    app: {
+        name: string;
+        url: string;
+    };
     member: Member;
     ziggy: Config & { location: string };
     sidebarOpen: boolean;
@@ -48,3 +52,11 @@ export interface Member {
     member_no: number;
     photo: string | null;
 }
+
+type ErrorResponse = {
+    response?: {
+        props?: {
+            error?: string;
+        };
+    };
+};
