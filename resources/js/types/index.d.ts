@@ -39,6 +39,8 @@ export interface SharedData {
     ziggy: Config & { location: string };
     sidebarOpen: boolean;
     [key: string]: unknown;
+    status: string | null;
+    error: string | null;
 }
 
 export interface User extends IdWithName {
@@ -46,11 +48,13 @@ export interface User extends IdWithName {
     email: string | null;
 }
 
-export interface Member {
-    id: string;
-    name: string;
+export interface Member extends IdWithName {
     member_no: number;
+    contact: string;
+    date_of_birth: Date;
     photo: string | null;
+    email: string | null;
+    registration_date: Date;
 }
 
 type ErrorResponse = {

@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\BaseModel;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
 class Member extends BaseModel
 {
     public $timestamps = true;
@@ -31,6 +33,14 @@ class Member extends BaseModel
     public function user()
     {
         return $this->hasOne(User::class, 'member_id');
+    }
+
+    protected function name(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => ucwords($value),
+            set: fn (string $value) => strtolower($value),
+        );
     }
 
 }
