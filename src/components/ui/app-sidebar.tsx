@@ -1,6 +1,5 @@
-import { Link } from '@tanstack/react-router'
+import { Link, useLocation } from '@tanstack/react-router'
 import {
-  ArrowUpRight,
   BarChart4,
   Bell,
   CreditCard,
@@ -21,12 +20,14 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
+  useSidebar,
 } from '@/components/ui/sidebar'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 // import AppLogo from '@/components/custom/logo'
 import { Separator } from '@/components/ui/separator'
 import { useAuth } from '@/hooks/use-auth'
+import { cn } from '@/lib/utils'
 
 const items = [
   {
@@ -43,11 +44,6 @@ const items = [
     title: 'Loans',
     icon: CreditCard,
     url: '/loans',
-  },
-  {
-    title: 'Withdrawals',
-    icon: ArrowUpRight,
-    url: '/withdrawals',
   },
   {
     title: 'Transactions',
@@ -70,21 +66,30 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {}
 
 export function AppSidebar({ ...props }: AppSidebarProps) {
   const { logout } = useAuth()
+  const location = useLocation()
+  const { open } = useSidebar()
   return (
     <Sidebar collapsible="icon" {...props} variant="inset">
       <SidebarHeader className="h-16 flex  justify-center">
-        {/* <AppLogo /> */}
         <UserAvatar />
       </SidebarHeader>
       <Separator />
       <SidebarContent>
         <SidebarGroup>
-          {/* <SidebarGroupLabel>Navigation</SidebarGroupLabel> */}
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton
+                    asChild
+                    className={cn(
+                      'transition-colors hover:bg-background hover:*:foreground',
+                      {
+                        'bg-background *:foreground':
+                          item.url === location.pathname,
+                      },
+                    )}
+                  >
                     <Link to={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
@@ -97,14 +102,21 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <Button
-          variant="ghost"
-          className="w-full justify-start hover:bg-destructive/50 hover:text-background transition-colors duration-200"
-          onClick={() => logout()}
-        >
-          <LogOut size={20} className="text-destructive" />
-          <span className="ml-3">Logout</span>
-        </Button>
+        {open ? (
+          <Button
+            variant="ghost"
+            className="w-full justify-start hover:bg-destructive/50 hover:text-background transition-colors duration-200"
+            onClick={() => logout()}
+          >
+            <LogOut size={20} className="text-destructive" />
+            <span className="ml-3">Logout</span>
+          </Button>
+        ) : (
+          <Button variant="ghost" size="icon" onClick={() => logout()}>
+            <LogOut size={20} className="text-destructive" />
+            <span className="sr-only">Logout</span>
+          </Button>
+        )}
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
@@ -113,6 +125,7 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
 
 function UserAvatar() {
   const { user } = useAuth()
+  const { open } = useSidebar()
   if (!user) return null
 
   const userAvatar = user.member?.photo
@@ -121,19 +134,19 @@ function UserAvatar() {
 
   return (
     <div className="flex items-center">
-      {/* <div className="size-12 border border-primary rounded-2xl bg-primary/50 flex items-center justify-center"> */}
       <Avatar className="size-12">
         <AvatarImage src={userAvatar} alt={user.name} />
       </Avatar>
-      {/* </div> */}
-      <div className="ml-2 hidden md:block">
-        <p className="text-sm font-medium text-accent-foreground">
-          {user.name || 'User'}
-        </p>
-        <p className="text-xs text-secondary-foreground">
-          Member #{user.member?.memberNo}
-        </p>
-      </div>
+      {open && (
+        <div className="ml-2 hidden md:block">
+          <p className="text-sm font-medium text-accent-foreground">
+            {user.name || 'User'}
+          </p>
+          <p className="text-xs text-secondary-foreground">
+            Member #{user.member?.memberNo}
+          </p>
+        </div>
+      )}
     </div>
   )
 }
