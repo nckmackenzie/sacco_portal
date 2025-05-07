@@ -29,6 +29,14 @@ code {
     source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+.icon {
+  @apply size-4;
+}
+
+.icon-muted {
+  @apply text-muted-foreground size-4;
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
