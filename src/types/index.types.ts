@@ -10,5 +10,6 @@ export interface User {
     photo: string | null
     registrationDate: Date
     memberNo: number
+    alternateNo: string | null
   } | null
 }
