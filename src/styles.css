@@ -37,6 +37,46 @@ code {
   @apply text-muted-foreground size-4;
 }
 
+.form-grid {
+  @apply grid gap-6 sm:grid-cols-12;
+}
+
+.col-6 {
+  @apply col-span-full md:col-span-6;
+}
+
+.col-full {
+  @apply col-span-full;
+}
+
+.col-2 {
+  @apply col-span-full md:col-span-2;
+}
+
+.col-3 {
+  @apply col-span-full md:col-span-3;
+}
+
+.col-4 {
+  @apply col-span-full md:col-span-4;
+}
+
+.row-font {
+  @apply text-xs capitalize;
+}
+
+.delete-menu-item {
+  @apply relative w-full flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm text-destructive outline-none transition-colors hover:bg-secondary focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50;
+}
+
+.more-btn {
+  @apply border-none outline-none cursor-pointer;
+}
+
+.input {
+  @apply flex w-full h-10 px-3 py-2 text-sm border rounded-md border-input bg-background;
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
