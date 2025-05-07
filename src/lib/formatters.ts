@@ -1,4 +1,5 @@
 import { isAxiosError } from 'axios'
+import { router } from '@/main'
 
 export const flattenErrors = (error: Record<string, Array<string>>) => {
   return Object.values(error).flat()
@@ -14,7 +15,7 @@ export function errorHandler(error: unknown) {
     } else if (error.status === 302) {
       throw new Error(error.response?.data.message)
     } else if (error.status === 401) {
-      window.location.pathname = '/login'
+      router.navigate({ to: '/login', replace: true })
     } else {
       errors = error.response?.data.error
     }
@@ -23,4 +24,20 @@ export function errorHandler(error: unknown) {
     console.error('Unexpected error:', error)
     throw new Error('An unexpected error occurred.')
   }
+}
+
+export function getInitials(name: string) {
+  const names = name.split(' ')
+  if (names.length === 1) {
+    return names[0].charAt(0).toUpperCase()
+  }
+  return names[0].charAt(0).toUpperCase() + names[1].charAt(0).toUpperCase()
+}
+
+export function formatDate(date: string | Date) {
+  return new Date(date).toLocaleDateString('en-KE', {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+  })
 }
