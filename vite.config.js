@@ -9,7 +9,11 @@ import { TanStackRouterVite } from '@tanstack/router-plugin/vite'
 export default defineConfig({
   plugins: [
     TanStackRouterVite({ autoCodeSplitting: true }),
-    viteReact(),
+    viteReact({
+      babel: {
+        plugins: [['babel-plugin-react-compiler']],
+      },
+    }),
     tailwindcss(),
   ],
   test: {
