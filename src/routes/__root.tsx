@@ -5,6 +5,7 @@ import TanstackQueryLayout from '../integrations/tanstack-query/layout'
 
 import type { QueryClient } from '@tanstack/react-query'
 import { Toaster } from '@/components/ui/sonner'
+import { ThemeProvider } from '@/components/providers/theme-provider'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -13,11 +14,13 @@ interface MyRouterContext {
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: () => (
     <>
-      <main className="h-screen">
-        <Outlet />
-        <Toaster />
-      </main>
-      <TanStackRouterDevtools position="top-right" />
+      <ThemeProvider defaultTheme="light" storageKey="sacco-ui-theme">
+        <main className="h-screen">
+          <Outlet />
+          <Toaster />
+        </main>
+      </ThemeProvider>
+      <TanStackRouterDevtools position="top-left" />
       <TanstackQueryLayout />
     </>
   ),
