@@ -1,10 +1,13 @@
 import React from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { CameraIcon, PencilIcon, XIcon } from 'lucide-react'
+import { CameraIcon, Loader2, PencilIcon, XIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { isAxiosError } from 'axios'
 import { toast } from 'sonner'
+import Dropzone from 'react-dropzone'
+import type { QueryClient } from '@tanstack/react-query'
+
 import type { ProfileFormValues } from '@/features/profile/utils/types'
 import type { User } from '@/types/index.types'
 import UserAvartar from '@/components/custom/user-avartar'
@@ -27,16 +30,55 @@ import axios from '@/lib/api/axios'
 
 export function PersonalInformation() {
   const { user } = useAuth()
+  const queryClient = useQueryClient()
   if (!user) return null
   return (
     <div className="space-y-6">
-      <AvatarForm user={user} />
-      <InformationForm user={user} />
+      <AvatarForm user={user} queryClient={queryClient} />
+      <InformationForm user={user} queryClient={queryClient} />
     </div>
   )
 }
 
-export function AvatarForm({ user }: { user: User }) {
+export function AvatarForm({
+  user,
+  queryClient,
+}: {
+  user: User
+  queryClient: QueryClient
+}) {
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (formData: FormData) => {
+      return await axios.post('/api/profile/photo', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+    },
+    onSuccess: () => {
+      toast.success('Profile picture updated successfully!')
+      queryClient.invalidateQueries({ queryKey: ['auth-user'] })
+    },
+    onError: (err) => {
+      console.error(err)
+      toast.error(
+        'An unexpected error occurred while uploading your photo. Please try again',
+      )
+    },
+  })
+
+  const handleFileDrop = React.useCallback(
+    (acceptedFiles: Array<File>) => {
+      if (!acceptedFiles.length) return
+
+      const formData = new FormData()
+      formData.append('photo', acceptedFiles[0])
+
+      mutate(formData)
+    },
+    [mutate],
+  )
+
   return (
     <Card className="shadow-none">
       <CardContent className="flex flex-col gap-y-4 items-center sm:flex-row sm:justify-between">
@@ -55,18 +97,63 @@ export function AvatarForm({ user }: { user: User }) {
             )}
           </div>
         </div>
-        <Button variant="outline" size="lg" className="w-full sm:w-auto">
-          <CameraIcon aria-hidden className="icon-muted" />
-          <span>Change Profile Picture</span>
-        </Button>
+        <Dropzone
+          onDrop={handleFileDrop}
+          disabled={isPending}
+          maxFiles={1}
+          multiple={true}
+          onError={(err) => toast.error(err.message)}
+          accept={{
+            'image/png': ['.png'],
+            'image/jpeg': ['.jpeg'],
+            'image/jpg': ['.jpg'],
+          }}
+          onDropRejected={() => toast.error('Invalid file type')}
+        >
+          {({ getRootProps, getInputProps, isDragActive }) => (
+            <div
+              {...getRootProps({
+                className: 'dropzone rounded-md text-center',
+              })}
+            >
+              <input {...getInputProps()} />
+              {isDragActive ? (
+                <p className="text-muted-foreground text-sm">
+                  Drop the files here ...
+                </p>
+              ) : (
+                <div className="flex flex-col items-center justify-center">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full sm:w-auto"
+                    disabled={isPending}
+                  >
+                    {isPending ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <CameraIcon className="mr-2 h-4 w-4" />
+                    )}
+                    {isPending ? 'Uploading....' : 'Change Picture'}
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
+        </Dropzone>
       </CardContent>
     </Card>
   )
 }
 
-export function InformationForm({ user }: { user: User }) {
+export function InformationForm({
+  user,
+  queryClient,
+}: {
+  user: User
+  queryClient: QueryClient
+}) {
   const [isEditing, setIsEditing] = React.useState(false)
-  const queryClient = useQueryClient()
 
   const form = useForm<ProfileFormValues>({
     defaultValues: {
