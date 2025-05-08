@@ -1,4 +1,5 @@
 import { isAxiosError } from 'axios'
+import type { UseFormSetError } from 'react-hook-form'
 import { router } from '@/main'
 
 export const flattenErrors = (error: Record<string, Array<string>>) => {
@@ -39,5 +40,21 @@ export function formatDate(date: string | Date) {
     year: 'numeric',
     month: 'short',
     day: '2-digit',
+  })
+}
+
+interface ApiErrors {
+  [key: string]: string
+}
+
+export const handleApiErrors = <T extends Record<string, any>>(
+  errors: ApiErrors,
+  setError: UseFormSetError<T>,
+) => {
+  Object.keys(errors).forEach((field) => {
+    setError(field as any, {
+      type: 'manual',
+      message: errors[field],
+    })
   })
 }
