@@ -20,7 +20,7 @@ export function DashboardStats({ data }: { data: MemberStats }) {
         value={`${formatCurrency(data.deposits)}`}
         description="Your total savings."
         icon={PiggyBankIcon}
-        className="bg-emerald-200/20 dark:bg-emerald-900 border-transparent"
+        className="from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-900/20 border border-emerald-200 dark:border-emerald-900"
         valueColor="text-emerald-500 dark:text-emerald-400"
       />
       <OverviewCard
@@ -28,7 +28,7 @@ export function DashboardStats({ data }: { data: MemberStats }) {
         value={`${formatCurrency(data.shareCapital)}`}
         description="Your ownership stake."
         icon={BarChart3Icon}
-        className="bg-blue-200/20 dark:bg-blue-900 border-transparent"
+        className="from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-900/20 border border-blue-200 dark:border-blue-900"
         valueColor="text-blue-500 dark:text-blue-400"
       />
       <OverviewCard
@@ -36,7 +36,7 @@ export function DashboardStats({ data }: { data: MemberStats }) {
         value={`${formatCurrency(data.totalLoanBalance)}`}
         description="Outstanding loan balance."
         icon={BanknoteIcon}
-        className="bg-rose-200/20 dark:bg-rose-900 border-transparent"
+        className="from-rose-50 to-rose-100 dark:from-rose-900/20 dark:to-rose-900/20 border border-rose-200 dark:border-rose-900"
         valueColor="text-rose-500 dark:text-rose-400"
       />
       <OverviewCard
@@ -44,7 +44,7 @@ export function DashboardStats({ data }: { data: MemberStats }) {
         value={data.loansGuaranteed.toString()}
         description="No of loans guaranteed."
         icon={TriangleAlertIcon}
-        className="bg-amber-200/20 dark:bg-amber-900 border-transparent"
+        className="from-amber-50 to-amber-100 dark:from-amber-900/20 dark:to-amber-900/20 border border-amber-200 dark:border-amber-900"
         valueColor="text-amber-500 dark:text-amber-400"
       />
     </div>
@@ -73,7 +73,7 @@ export function OverviewCard({
   valueColor,
 }: OverviewCardProps) {
   return (
-    <Card className={cn('shadow-none', className)}>
+    <Card className={cn('shadow-none bg-gradient-to-br', className)}>
       <CardHeader className="flex flex-row items-center justify-between ">
         <CardTitle className="text-sm font-medium text-muted-foreground">
           {title}
@@ -81,7 +81,9 @@ export function OverviewCard({
         <Icon className="h-4 w-4 text-muted-foreground" aria-hidden />
       </CardHeader>
       <CardContent>
-        <div className={cn('text-2xl font-bold', valueColor)}>{value}</div>
+        <div className={cn('text-2xl font-bold capitalize', valueColor)}>
+          {value}
+        </div>
         {description && (
           <p className="text-xs text-muted-foreground mt-1">{description}</p>
         )}
