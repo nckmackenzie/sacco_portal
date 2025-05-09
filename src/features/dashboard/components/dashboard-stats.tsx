@@ -74,7 +74,7 @@ export function OverviewCard({
 }: OverviewCardProps) {
   return (
     <Card className={cn('shadow-none', className)}>
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
+      <CardHeader className="flex flex-row items-center justify-between ">
         <CardTitle className="text-sm font-medium text-muted-foreground">
           {title}
         </CardTitle>
