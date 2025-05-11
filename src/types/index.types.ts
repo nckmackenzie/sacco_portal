@@ -13,3 +13,8 @@ export interface User {
     alternateNo: string | null
   } | null
 }
+
+export type PaymentMethod = 'cash' | 'mpesa' | 'cheque' | 'bank'
+export interface WithId {
+  id: string
+}
