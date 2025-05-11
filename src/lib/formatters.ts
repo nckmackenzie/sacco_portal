@@ -58,3 +58,11 @@ export const handleApiErrors = <T extends Record<string, any>>(
     })
   })
 }
+
+export function formatCurrency(value: number) {
+  return new Intl.NumberFormat('en-KE', {
+    style: 'currency',
+    currency: 'kes',
+    currencyDisplay: 'narrowSymbol',
+  }).format(value)
+}
