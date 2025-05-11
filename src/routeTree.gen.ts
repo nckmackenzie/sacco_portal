@@ -14,6 +14,9 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as LoginImport } from './routes/login'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
+import { Route as AuthTransactionsImport } from './routes/_auth/transactions'
+import { Route as AuthProfileImport } from './routes/_auth/profile'
+import { Route as AuthNotificationsImport } from './routes/_auth/notifications'
 import { Route as AuthDashboardImport } from './routes/_auth/dashboard'
 
 // Create/Update Routes
@@ -33,6 +36,24 @@ const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const AuthTransactionsRoute = AuthTransactionsImport.update({
+  id: '/transactions',
+  path: '/transactions',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthProfileRoute = AuthProfileImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthNotificationsRoute = AuthNotificationsImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => AuthRoute,
 } as any)
 
 const AuthDashboardRoute = AuthDashboardImport.update({
@@ -73,6 +94,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthDashboardImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/notifications': {
+      id: '/_auth/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof AuthNotificationsImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/profile': {
+      id: '/_auth/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthProfileImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/transactions': {
+      id: '/_auth/transactions'
+      path: '/transactions'
+      fullPath: '/transactions'
+      preLoaderRoute: typeof AuthTransactionsImport
+      parentRoute: typeof AuthImport
+    }
   }
 }
 
@@ -80,10 +122,16 @@ declare module '@tanstack/react-router' {
 
 interface AuthRouteChildren {
   AuthDashboardRoute: typeof AuthDashboardRoute
+  AuthNotificationsRoute: typeof AuthNotificationsRoute
+  AuthProfileRoute: typeof AuthProfileRoute
+  AuthTransactionsRoute: typeof AuthTransactionsRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthDashboardRoute: AuthDashboardRoute,
+  AuthNotificationsRoute: AuthNotificationsRoute,
+  AuthProfileRoute: AuthProfileRoute,
+  AuthTransactionsRoute: AuthTransactionsRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
@@ -93,6 +141,9 @@ export interface FileRoutesByFullPath {
   '': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthDashboardRoute
+  '/notifications': typeof AuthNotificationsRoute
+  '/profile': typeof AuthProfileRoute
+  '/transactions': typeof AuthTransactionsRoute
 }
 
 export interface FileRoutesByTo {
@@ -100,6 +151,9 @@ export interface FileRoutesByTo {
   '': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthDashboardRoute
+  '/notifications': typeof AuthNotificationsRoute
+  '/profile': typeof AuthProfileRoute
+  '/transactions': typeof AuthTransactionsRoute
 }
 
 export interface FileRoutesById {
@@ -108,14 +162,39 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/_auth/dashboard': typeof AuthDashboardRoute
+  '/_auth/notifications': typeof AuthNotificationsRoute
+  '/_auth/profile': typeof AuthProfileRoute
+  '/_auth/transactions': typeof AuthTransactionsRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/login' | '/dashboard'
+  fullPaths:
+    | '/'
+    | ''
+    | '/login'
+    | '/dashboard'
+    | '/notifications'
+    | '/profile'
+    | '/transactions'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/login' | '/dashboard'
-  id: '__root__' | '/' | '/_auth' | '/login' | '/_auth/dashboard'
+  to:
+    | '/'
+    | ''
+    | '/login'
+    | '/dashboard'
+    | '/notifications'
+    | '/profile'
+    | '/transactions'
+  id:
+    | '__root__'
+    | '/'
+    | '/_auth'
+    | '/login'
+    | '/_auth/dashboard'
+    | '/_auth/notifications'
+    | '/_auth/profile'
+    | '/_auth/transactions'
   fileRoutesById: FileRoutesById
 }
 
@@ -152,7 +231,10 @@ export const routeTree = rootRoute
     "/_auth": {
       "filePath": "_auth.tsx",
       "children": [
-        "/_auth/dashboard"
+        "/_auth/dashboard",
+        "/_auth/notifications",
+        "/_auth/profile",
+        "/_auth/transactions"
       ]
     },
     "/login": {
@@ -160,6 +242,18 @@ export const routeTree = rootRoute
     },
     "/_auth/dashboard": {
       "filePath": "_auth/dashboard.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/notifications": {
+      "filePath": "_auth/notifications.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/profile": {
+      "filePath": "_auth/profile.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/transactions": {
+      "filePath": "_auth/transactions.tsx",
       "parent": "/_auth"
     }
   }

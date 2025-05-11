@@ -9,8 +9,9 @@ import {
 import type { LucideIcon } from 'lucide-react'
 import type { MemberStats } from '@/features/dashboard/utils/dashboard.types'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { cn } from '@/lib/utils'
+
 import { formatCurrency } from '@/lib/formatters'
+import { cn } from '@/lib/utils'
 
 export function DashboardStats({ data }: { data: MemberStats }) {
   return (
@@ -21,7 +22,7 @@ export function DashboardStats({ data }: { data: MemberStats }) {
         description="Your total savings."
         icon={PiggyBankIcon}
         className="from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-900/20 border border-emerald-200 dark:border-emerald-900"
-        valueColor="text-emerald-500 dark:text-emerald-400"
+        valueColor="text-success-foreground"
       />
       <OverviewCard
         title="Share Capital"

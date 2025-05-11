@@ -1,6 +1,10 @@
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
-import { RouterProvider, createRouter } from '@tanstack/react-router'
+import {
+  ErrorComponent,
+  RouterProvider,
+  createRouter,
+} from '@tanstack/react-router'
 
 import * as TanstackQuery from './integrations/tanstack-query/root-provider'
 
@@ -8,6 +12,8 @@ import * as TanstackQuery from './integrations/tanstack-query/root-provider'
 import { routeTree } from './routeTree.gen.ts'
 
 import './styles.css'
+import NotFound from '@/components/custom/not-found.tsx'
+import { FullPageLoader } from '@/components/custom/spinner.tsx'
 
 // Create a new router instance
 export const router = createRouter({
@@ -15,6 +21,11 @@ export const router = createRouter({
   context: {
     ...TanstackQuery.getContext(),
   },
+  defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
+  defaultNotFoundComponent: () => <NotFound />,
+  defaultPendingComponent: () => (
+    <FullPageLoader message="Fetching your data..." />
+  ),
   defaultPreload: 'intent',
   scrollRestoration: true,
   defaultStructuralSharing: true,
