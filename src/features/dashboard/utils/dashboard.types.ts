@@ -15,3 +15,22 @@ export interface MemberTransaction extends WithId {
   paymentReference: string | null
   transactionType: string
 }
+
+export interface LoanType extends WithId {
+  name: string
+  alias: string
+}
+
+export interface DashboardLoan extends WithId {
+  loanAmount: number
+  applicationDate: Date
+  purpose: string
+  loanStatus: 'approved' | 'pending' | 'rejected' | 'repaid'
+  completedAt: Date | null
+  loanBalance: number
+  loanType: LoanType
+  writtenOff: boolean
+  writtenOffDate: Date | null
+  nextDueDate: Date | null
+  approvalDate: Date | null
+}
