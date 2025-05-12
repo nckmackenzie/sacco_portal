@@ -27,7 +27,7 @@ export function RecentTransactions({
     <Card className="shadow-none">
       <CardHeader className="flex flex-row items-center justify-between ">
         <div>
-          <CardTitle className="text-lg font-semibold text-gray-900">
+          <CardTitle className="text-lg font-semibold ">
             Recent Transactions
           </CardTitle>
           <CardDescription className="text-sm text-muted-foreground">
