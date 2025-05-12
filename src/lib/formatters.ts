@@ -1,5 +1,6 @@
 import { isAxiosError } from 'axios'
 import type { UseFormSetError } from 'react-hook-form'
+import type { DashboardLoan } from '@/features/dashboard/utils/dashboard.types'
 import { router } from '@/main'
 
 export const flattenErrors = (error: Record<string, Array<string>>) => {
@@ -65,4 +66,28 @@ export function formatCurrency(value: number) {
     currency: 'kes',
     currencyDisplay: 'narrowSymbol',
   }).format(value)
+}
+
+export function getLoanStatus(
+  loanStatus: DashboardLoan['loanStatus'],
+  completedAt: Date | null,
+  nextDueDate: Date | null,
+  balance: number,
+  writtenOff: boolean,
+) {
+  if (completedAt || loanStatus === 'repaid' || balance < 0) {
+    return 'completed'
+  } else if (nextDueDate && nextDueDate < new Date()) {
+    return 'overdue'
+  } else if (loanStatus === 'approved' && balance > 0 && !writtenOff) {
+    return 'active'
+  } else if (loanStatus === 'pending') {
+    return 'pending'
+  } else if (loanStatus === 'rejected') {
+    return 'rejected'
+  } else if (writtenOff) {
+    return 'written-off'
+  } else {
+    return 'unknown'
+  }
 }
