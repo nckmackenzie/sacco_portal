@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/card'
 
 import { formatCurrency, formatDate } from '@/lib/formatters'
+import { cn } from '@/lib/utils'
 
 export function RecentTransactions({
   data,
@@ -71,7 +72,12 @@ function TransactionItem({ transaction }: { transaction: MemberTransaction }) {
       </div>
       <div className="flex flex-col items-end">
         <p
-          className={`text-sm font-medium ${isPositive ? 'text-emerald-500 dark:text-emerald-400' : 'text-amber-500 dark:text-amber-400'}`}
+          className={cn('text-sm font-medium text-warning-foreground', {
+            'text-success-foreground': isPositive,
+            'text-error-foreground':
+              transaction.transactionType === 'withdrawal' ||
+              transaction.transactionType === 'offset',
+          })}
         >
           {formatCurrency(transaction.amount)}
         </p>
