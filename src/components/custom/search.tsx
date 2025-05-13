@@ -23,7 +23,7 @@ export default function Search({
   }, 500)
 
   return (
-    <div className={cn('relative flex flex-1 flex-shrink-0', parentClassName)}>
+    <div className={cn('relative shrink-0', parentClassName)}>
       <label htmlFor="search" className="sr-only">
         Search
       </label>
