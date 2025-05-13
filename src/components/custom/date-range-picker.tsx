@@ -91,7 +91,7 @@ export function DateRangePicker({
             selected={date}
             onSelect={handleSelect}
             numberOfMonths={numberOfMonths}
-            disabled={!allowPastDates ? { before: new Date() } : undefined}
+            disabled={{ after: new Date() }}
           />
         </PopoverContent>
       </Popover>
