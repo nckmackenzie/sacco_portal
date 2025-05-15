@@ -17,7 +17,10 @@ import { Route as IndexImport } from './routes/index'
 import { Route as AuthTransactionsImport } from './routes/_auth/transactions'
 import { Route as AuthProfileImport } from './routes/_auth/profile'
 import { Route as AuthNotificationsImport } from './routes/_auth/notifications'
+import { Route as AuthLoansImport } from './routes/_auth/loans'
+import { Route as AuthDepositsImport } from './routes/_auth/deposits'
 import { Route as AuthDashboardImport } from './routes/_auth/dashboard'
+import { Route as AuthLoansNewImport } from './routes/_auth/loans_.new'
 
 // Create/Update Routes
 
@@ -56,9 +59,27 @@ const AuthNotificationsRoute = AuthNotificationsImport.update({
   getParentRoute: () => AuthRoute,
 } as any)
 
+const AuthLoansRoute = AuthLoansImport.update({
+  id: '/loans',
+  path: '/loans',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthDepositsRoute = AuthDepositsImport.update({
+  id: '/deposits',
+  path: '/deposits',
+  getParentRoute: () => AuthRoute,
+} as any)
+
 const AuthDashboardRoute = AuthDashboardImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthLoansNewRoute = AuthLoansNewImport.update({
+  id: '/loans_/new',
+  path: '/loans/new',
   getParentRoute: () => AuthRoute,
 } as any)
 
@@ -94,6 +115,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthDashboardImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/deposits': {
+      id: '/_auth/deposits'
+      path: '/deposits'
+      fullPath: '/deposits'
+      preLoaderRoute: typeof AuthDepositsImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/loans': {
+      id: '/_auth/loans'
+      path: '/loans'
+      fullPath: '/loans'
+      preLoaderRoute: typeof AuthLoansImport
+      parentRoute: typeof AuthImport
+    }
     '/_auth/notifications': {
       id: '/_auth/notifications'
       path: '/notifications'
@@ -115,6 +150,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthTransactionsImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/loans_/new': {
+      id: '/_auth/loans_/new'
+      path: '/loans/new'
+      fullPath: '/loans/new'
+      preLoaderRoute: typeof AuthLoansNewImport
+      parentRoute: typeof AuthImport
+    }
   }
 }
 
@@ -122,16 +164,22 @@ declare module '@tanstack/react-router' {
 
 interface AuthRouteChildren {
   AuthDashboardRoute: typeof AuthDashboardRoute
+  AuthDepositsRoute: typeof AuthDepositsRoute
+  AuthLoansRoute: typeof AuthLoansRoute
   AuthNotificationsRoute: typeof AuthNotificationsRoute
   AuthProfileRoute: typeof AuthProfileRoute
   AuthTransactionsRoute: typeof AuthTransactionsRoute
+  AuthLoansNewRoute: typeof AuthLoansNewRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthDashboardRoute: AuthDashboardRoute,
+  AuthDepositsRoute: AuthDepositsRoute,
+  AuthLoansRoute: AuthLoansRoute,
   AuthNotificationsRoute: AuthNotificationsRoute,
   AuthProfileRoute: AuthProfileRoute,
   AuthTransactionsRoute: AuthTransactionsRoute,
+  AuthLoansNewRoute: AuthLoansNewRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
@@ -141,9 +189,12 @@ export interface FileRoutesByFullPath {
   '': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthDashboardRoute
+  '/deposits': typeof AuthDepositsRoute
+  '/loans': typeof AuthLoansRoute
   '/notifications': typeof AuthNotificationsRoute
   '/profile': typeof AuthProfileRoute
   '/transactions': typeof AuthTransactionsRoute
+  '/loans/new': typeof AuthLoansNewRoute
 }
 
 export interface FileRoutesByTo {
@@ -151,9 +202,12 @@ export interface FileRoutesByTo {
   '': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/dashboard': typeof AuthDashboardRoute
+  '/deposits': typeof AuthDepositsRoute
+  '/loans': typeof AuthLoansRoute
   '/notifications': typeof AuthNotificationsRoute
   '/profile': typeof AuthProfileRoute
   '/transactions': typeof AuthTransactionsRoute
+  '/loans/new': typeof AuthLoansNewRoute
 }
 
 export interface FileRoutesById {
@@ -162,9 +216,12 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/_auth/dashboard': typeof AuthDashboardRoute
+  '/_auth/deposits': typeof AuthDepositsRoute
+  '/_auth/loans': typeof AuthLoansRoute
   '/_auth/notifications': typeof AuthNotificationsRoute
   '/_auth/profile': typeof AuthProfileRoute
   '/_auth/transactions': typeof AuthTransactionsRoute
+  '/_auth/loans_/new': typeof AuthLoansNewRoute
 }
 
 export interface FileRouteTypes {
@@ -174,27 +231,36 @@ export interface FileRouteTypes {
     | ''
     | '/login'
     | '/dashboard'
+    | '/deposits'
+    | '/loans'
     | '/notifications'
     | '/profile'
     | '/transactions'
+    | '/loans/new'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | ''
     | '/login'
     | '/dashboard'
+    | '/deposits'
+    | '/loans'
     | '/notifications'
     | '/profile'
     | '/transactions'
+    | '/loans/new'
   id:
     | '__root__'
     | '/'
     | '/_auth'
     | '/login'
     | '/_auth/dashboard'
+    | '/_auth/deposits'
+    | '/_auth/loans'
     | '/_auth/notifications'
     | '/_auth/profile'
     | '/_auth/transactions'
+    | '/_auth/loans_/new'
   fileRoutesById: FileRoutesById
 }
 
@@ -232,9 +298,12 @@ export const routeTree = rootRoute
       "filePath": "_auth.tsx",
       "children": [
         "/_auth/dashboard",
+        "/_auth/deposits",
+        "/_auth/loans",
         "/_auth/notifications",
         "/_auth/profile",
-        "/_auth/transactions"
+        "/_auth/transactions",
+        "/_auth/loans_/new"
       ]
     },
     "/login": {
@@ -242,6 +311,14 @@ export const routeTree = rootRoute
     },
     "/_auth/dashboard": {
       "filePath": "_auth/dashboard.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/deposits": {
+      "filePath": "_auth/deposits.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/loans": {
+      "filePath": "_auth/loans.tsx",
       "parent": "/_auth"
     },
     "/_auth/notifications": {
@@ -254,6 +331,10 @@ export const routeTree = rootRoute
     },
     "/_auth/transactions": {
       "filePath": "_auth/transactions.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/loans_/new": {
+      "filePath": "_auth/loans_.new.tsx",
       "parent": "/_auth"
     }
   }
