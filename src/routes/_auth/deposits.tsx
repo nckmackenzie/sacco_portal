@@ -163,7 +163,9 @@ function NewDeposit() {
         <Form {...form}>
           <form
             className="space-y-4"
-            onSubmit={form.handleSubmit((data) => {})}
+            onSubmit={form.handleSubmit((data) => {
+              console.log(data)
+            })}
           >
             <CredenzaHeader>
               <CredenzaTitle>Make a deposit</CredenzaTitle>
