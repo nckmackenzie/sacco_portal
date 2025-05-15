@@ -3,9 +3,9 @@ import {
   Outlet,
   createFileRoute,
   useLocation,
-  // useNavigate,
+  useNavigate,
 } from '@tanstack/react-router'
-// import { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Bell, MoonIcon, SunIcon } from 'lucide-react'
 
 import {
@@ -14,7 +14,7 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/ui/app-sidebar'
-// import { useAuth } from '@/hooks/use-auth'
+import { useAuth } from '@/hooks/use-auth'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useTheme } from '@/components/providers/theme-provider'
@@ -45,20 +45,20 @@ export const Route = createFileRoute('/_auth')({
 })
 
 function RouteComponent() {
-  // const { isAuthenticated, isLoading } = useAuth()
+  const { isAuthenticated, isLoading } = useAuth()
   const slocation = useLocation()
   const { theme, setTheme } = useTheme()
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
 
-  // useEffect(() => {
-  //   if (!isLoading && !isAuthenticated) {
-  //     navigate({
-  //       to: '/login',
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      navigate({
+        to: '/login',
 
-  //       replace: true,
-  //     })
-  //   }
-  // }, [isAuthenticated, isLoading, navigate])
+        replace: true,
+      })
+    }
+  }, [isAuthenticated, isLoading, navigate])
 
   return (
     <SidebarProvider>
