@@ -13,11 +13,11 @@ import {
 import { useExportCsv } from '@/hooks/use-csv'
 import { formatCurrency, formatDate } from '@/lib/formatters'
 
-const transactionSearchSchema = z.object({
+export const transactionSearchSchema = z.object({
   q: z.string().optional(),
-  transactionType: z.string().optional(),
-  from: z.coerce.date().optional(),
-  to: z.coerce.date().optional(),
+  // transactionType: z.string().optional(),
+  from: z.string().optional(),
+  to: z.string().optional(),
 })
 
 export const Route = createFileRoute('/_auth/transactions')({
