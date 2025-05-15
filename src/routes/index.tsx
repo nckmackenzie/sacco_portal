@@ -1,7 +1,7 @@
 import React from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import logo from '../logo.svg'
 import { useAuth } from '@/hooks/use-auth'
+import AppLogo from '@/components/custom/logo'
 
 export const Route = createFileRoute('/')({
   component: App,
@@ -18,7 +18,7 @@ function App() {
 
         replace: true,
       })
-    } else if (isAuthenticated) {
+    } else if (isAuthenticated && !isLoading) {
       navigate({
         to: '/dashboard',
         replace: true,
@@ -27,12 +27,8 @@ function App() {
   }, [isAuthenticated, isLoading, navigate])
 
   return (
-    <div className="text-center">
-      <img
-        src={logo}
-        className="animate-spin-slow h-32 w-32 mx-auto"
-        alt="logo"
-      />
+    <div className="text-center h-full flex flex-col items-center justify-center gap-4">
+      <AppLogo />
       <h1 className="text-2xl font-bold">Welcome to the Member&apos; Portal</h1>
       <p className="text-sm text-muted-foreground">
         Please wait while we redirect you...
