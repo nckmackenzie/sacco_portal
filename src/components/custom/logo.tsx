@@ -1,4 +1,4 @@
-import type {SVGAttributes} from 'react';
+import type { SVGAttributes } from 'react'
 import { cn } from '@/lib/utils'
 
 interface AppLogoProps extends React.ComponentProps<'div'> {
