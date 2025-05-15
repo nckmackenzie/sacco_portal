@@ -1,39 +1,42 @@
-import { createFileRoute } from '@tanstack/react-router'
+import React from 'react'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import logo from '../logo.svg'
+import { useAuth } from '@/hooks/use-auth'
 
 export const Route = createFileRoute('/')({
   component: App,
 })
 
 function App() {
+  const { isLoading, isAuthenticated } = useAuth()
+  const navigate = useNavigate()
+
+  React.useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      navigate({
+        to: '/login',
+
+        replace: true,
+      })
+    } else if (isAuthenticated) {
+      navigate({
+        to: '/dashboard',
+        replace: true,
+      })
+    }
+  }, [isAuthenticated, isLoading, navigate])
+
   return (
     <div className="text-center">
-      <header className="min-h-screen flex flex-col items-center justify-center bg-[#282c34] text-white text-[calc(10px+2vmin)]">
-        <img
-          src={logo}
-          className="h-[40vmin] pointer-events-none animate-[spin_20s_linear_infinite]"
-          alt="logo"
-        />
-        <p>
-          Edit <code>src/routes/index.tsx</code> and save to reload.
-        </p>
-        <a
-          className="text-[#61dafb] hover:underline"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <a
-          className="text-[#61dafb] hover:underline"
-          href="https://tanstack.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn TanStack
-        </a>
-      </header>
+      <img
+        src={logo}
+        className="animate-spin-slow h-32 w-32 mx-auto"
+        alt="logo"
+      />
+      <h1 className="text-2xl font-bold">Welcome to the Member&apos; Portal</h1>
+      <p className="text-sm text-muted-foreground">
+        Please wait while we redirect you...
+      </p>
     </div>
   )
 }
