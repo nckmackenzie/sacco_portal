@@ -3,7 +3,7 @@ import {
   CalendarCheckIcon,
   CalendarXIcon,
   CaptionsOffIcon,
-  CheckCircle2Icon,
+  CheckCircleIcon,
   CircleXIcon,
   HourglassIcon,
   TriangleAlertIcon,
@@ -61,7 +61,7 @@ function CustomStatusBadge({ text, variant }: CustomStatusBadgeProps) {
   return (
     <Badge variant={variant} className="inline-flex gap-1 px-0.5 capitalize">
       {variant === 'success' ? (
-        <CheckCircle2Icon size={14} />
+        <CheckCircleIcon size={14} />
       ) : variant === 'error' ? (
         <CircleXIcon size={14} />
       ) : (
