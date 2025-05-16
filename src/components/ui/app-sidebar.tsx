@@ -138,7 +138,7 @@ function UserAvatar() {
         <AvatarImage src={userAvatar} alt={user.name} />
       </Avatar>
       {open && (
-        <div className="ml-2 hidden md:block">
+        <div className="ml-2">
           <p className="text-sm font-medium text-accent-foreground">
             {user.name || 'User'}
           </p>
