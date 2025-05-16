@@ -194,7 +194,7 @@ function NewDeposit() {
                 )}
               />
             </CredenzaBody>
-            <CredenzaFooter className="flex items-center justify-end">
+            <CredenzaFooter className="flex flex-row items-center justify-end">
               <Button>Submit</Button>
               <CredenzaClose asChild>
                 <Button
