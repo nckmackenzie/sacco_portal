@@ -18,3 +18,8 @@ export type PaymentMethod = 'cash' | 'mpesa' | 'cheque' | 'bank'
 export interface WithId {
   id: string
 }
+
+export interface Option {
+  value: string
+  label: string
+}
