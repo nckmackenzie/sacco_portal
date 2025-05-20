@@ -1,13 +1,27 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { useEffect } from 'react'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import AppLogo from '@/components/custom/logo'
 import { LoginForm } from '@/features/auth/components/login-form'
 import loginLight from '@/assets/login-light.svg'
+import { useAuth } from '@/hooks/use-auth'
 
 export const Route = createFileRoute('/login')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
+  const navigate = useNavigate()
+  const { isAuthenticated, isLoading } = useAuth()
+
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      navigate({
+        to: '/dashboard',
+        replace: true,
+      })
+    }
+  }, [isAuthenticated, isLoading, navigate])
+
   return (
     <div className="bg-background rounded-md shadow h-full grid sm:grid-cols-2 sm:gap-4 p-4">
       <div className="rounded-2xl flex flex-col">
