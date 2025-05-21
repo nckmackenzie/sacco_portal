@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { getRouteApi } from '@tanstack/react-router'
 import type { UseFormReturn } from 'react-hook-form'
@@ -28,14 +29,19 @@ export default function Information({
 }: {
   form: UseFormReturn<LoanApplicationFormValues>
 }) {
-  const { data: loanTypes } = route.useLoaderData()
+  const [loanTypes, memberLoanStatus] = route.useLoaderData()
   const { data } = useQuery(loanTypesQueryOptions())
 
-  // Format options for react-select
-  const loanTypeOptions = (data?.data || loanTypes).map(({ id, name }) => ({
-    value: id,
-    label: name.toUpperCase(),
-  }))
+  const loanTypeOptions = (data?.data || loanTypes.data)
+    .filter(({ isActive }) => isActive)
+    .map(({ id, name }) => ({
+      value: id,
+      label: name.toUpperCase(),
+    }))
+
+  useEffect(function () {
+    form.setValue('loanLimit', memberLoanStatus.data.loanLimit)
+  }, [])
 
   return (
     <div className="space-y-6">
@@ -48,7 +54,16 @@ export default function Information({
             <BasicSelect
               options={loanTypeOptions}
               defaultValue={field.value}
-              onChange={field.onChange}
+              onChange={(value) => {
+                field.onChange(value)
+                if (value) {
+                  const maximumRepayment =
+                    data?.data.find((item) => item.id === value)
+                      ?.maximumRepayment || 24
+                  form.setValue('maximumRepaymentPeriod', maximumRepayment)
+                  form.setValue('repaymentPeriod', maximumRepayment)
+                }
+              }}
               value={field.value}
             />
             <FormMessage />
@@ -62,7 +77,25 @@ export default function Information({
           <FormItem>
             <FormLabel>Loan Amount</FormLabel>
             <FormControl>
-              <Input type="number" {...field} placeholder="Enter amount..." />
+              <Input
+                type="number"
+                {...field}
+                onChange={(e) => {
+                  const value = e.target.value
+                  field.onChange(value)
+                  if (value) {
+                    const deposits = memberLoanStatus.data.deposits
+                    const loanBalance = memberLoanStatus.data.totalLoanBalance
+                    const remainingBalance = deposits - loanBalance
+                    if (Number(value) > remainingBalance) {
+                      form.setValue('canSelfGuarantee', false)
+                    } else {
+                      form.setValue('canSelfGuarantee', true)
+                    }
+                  }
+                }}
+                placeholder="Enter amount..."
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
