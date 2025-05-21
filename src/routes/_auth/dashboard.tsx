@@ -16,6 +16,7 @@ import {
 import { formatCurrency, formatDate, getLoanStatus } from '@/lib/formatters'
 import { Progress } from '@/components/ui/progress'
 import { LoanStatus } from '@/features/dashboard/components/loan-status'
+import { Button } from '@/components/ui/button'
 
 export const Route = createFileRoute('/_auth/dashboard')({
   loader: ({ context: { queryClient } }) =>
@@ -33,6 +34,31 @@ function RouteComponent() {
   } = useSuspenseQuery(dashboardQueryOptions())
   return (
     <div className="space-y-6">
+      {data.requests > 0 && (
+        <div className="bg-warning max-w-2xl mx-auto rounded-md">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between p-4">
+            <div>
+              <h2 className="text-lg font-semibold">Welcome back!</h2>
+              <p className="text-sm text-muted-foreground">
+                You have {data.requests} pending{' '}
+                {data.requests > 1 ? 'requests' : 'request'} to review.
+              </p>
+            </div>
+            <Button
+              asChild
+              variant="ghost"
+              className="border border-warning-foreground/80 hover:bg-warning-foreground/10"
+            >
+              <Link
+                to="/pending-requests"
+                className="text-xs font-semibold text-accent-foreground dark:text-white"
+              >
+                Let&apos;s go
+              </Link>
+            </Button>
+          </div>
+        </div>
+      )}
       <DashboardStats data={data.stats} />
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <RecentTransactions data={data.transactions.splice(0, 5)} />
