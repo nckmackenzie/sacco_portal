@@ -23,3 +23,20 @@ export interface Option {
   value: string
   label: string
 }
+
+export interface Notification extends WithId {
+  title: string
+  message: string
+  path: string
+  isRead: boolean
+  createdAt: Date
+}
+
+export interface Pagination {
+  total: number
+  perPage: number
+  currentPage: number
+  lastPage: number
+  from: number
+  to: number
+}
