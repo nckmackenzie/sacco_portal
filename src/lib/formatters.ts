@@ -28,6 +28,27 @@ export function errorHandler(error: unknown) {
   }
 }
 
+export function fetchErrorHandler(error: unknown) {
+  if (isAxiosError(error)) {
+    if (error.status === 404) {
+      return 'Could not find the requested resource.'
+    } else if (error.status === 401) {
+      router.navigate({ to: '/login', replace: true })
+    } else {
+      return (
+        error.response?.data.error ||
+        error.response?.data.message ||
+        'An error occurred while performing this action.'
+      )
+    }
+  } else {
+    if (error instanceof Error) {
+      return error.message
+    }
+    return 'An unexpected error occurred.'
+  }
+}
+
 export function getInitials(name: string) {
   const names = name.split(' ')
   if (names.length === 1) {
