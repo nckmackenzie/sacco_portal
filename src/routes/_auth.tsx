@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import {
   Link,
   Outlet,
@@ -5,7 +6,7 @@ import {
   useLocation,
   useNavigate,
 } from '@tanstack/react-router'
-import { useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { Bell, MoonIcon, SunIcon } from 'lucide-react'
 
 import {
@@ -18,6 +19,7 @@ import { useAuth } from '@/hooks/use-auth'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useTheme } from '@/components/providers/theme-provider'
+import { notificationsOptions } from '@/services/query-options'
 
 const getPageTitle = (location: string) => {
   switch (location) {
@@ -41,6 +43,8 @@ const getPageTitle = (location: string) => {
 }
 
 export const Route = createFileRoute('/_auth')({
+  loader: ({ context }) =>
+    context.queryClient.ensureQueryData(notificationsOptions()),
   component: RouteComponent,
 })
 
@@ -82,21 +86,7 @@ function RouteComponent() {
                 <SunIcon className="h-4 w-4" />
               )}
             </Button>
-            <div
-              className={cn(
-                buttonVariants({ variant: 'outline', size: 'icon' }),
-                'relative',
-              )}
-              role="button"
-            >
-              <Link
-                to="/notifications"
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <Bell size={20} />
-                <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
-              </Link>
-            </div>
+            <Notifications />
           </div>
         </header>
         <div className="flex flex-col flex-1 gap-4 p-4 md:p-6 ">
@@ -104,5 +94,25 @@ function RouteComponent() {
         </div>
       </SidebarInset>
     </SidebarProvider>
+  )
+}
+
+function Notifications() {
+  const { data } = useQuery(notificationsOptions())
+  return (
+    <div
+      className={cn(
+        buttonVariants({ variant: 'outline', size: 'icon' }),
+        'relative',
+      )}
+      role="button"
+    >
+      <Link to="/notifications" className="text-gray-500 hover:text-gray-700">
+        <Bell size={20} />
+        {data?.unread && data.unread > 0 ? (
+          <span className="absolute -top-1 right-0 h-2 w-2 bg-rose-400 dark:bg-rose-600 rounded-full"></span>
+        ) : null}
+      </Link>
+    </div>
   )
 }
