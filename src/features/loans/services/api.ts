@@ -8,8 +8,30 @@ interface FetchLoansParams {
   loanType?: string
 }
 
+export async function fetchMemberLoanStatus(): Promise<{
+  data: {
+    totalLoanBalance: number
+    loanLimit: number
+    deposits: number
+  }
+}> {
+  try {
+    const { data } = await axios('/api/member-loan-status')
+
+    return data
+  } catch (error) {
+    console.error('Error fetching member loan status:', error)
+    throw new Error('Failed to fetch member loan status')
+  }
+}
+
 export async function fetchLoanTypes(): Promise<{
-  data: Array<{ id: string; name: string }>
+  data: Array<{
+    id: string
+    name: string
+    maximumRepayment: number
+    isActive: boolean
+  }>
 }> {
   try {
     const { data } = await axios('/api/loan-types/min')
