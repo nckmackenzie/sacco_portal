@@ -8,6 +8,7 @@ import axios from '@/lib/api/axios'
 export async function fetchDashboardData(): Promise<{
   data: {
     stats: MemberStats
+    requests: number
     transactions: Array<MemberTransaction>
     loans: Array<DashboardLoan>
   }
