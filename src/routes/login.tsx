@@ -4,12 +4,14 @@ import AppLogo from '@/components/custom/logo'
 import { LoginForm } from '@/features/auth/components/login-form'
 import loginLight from '@/assets/login-light.svg'
 import { useAuth } from '@/hooks/use-auth'
+import { useDocumentTitle } from '@/hooks/use-title'
 
 export const Route = createFileRoute('/login')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
+  useDocumentTitle('Login')
   const navigate = useNavigate()
   const { isAuthenticated, isLoading } = useAuth()
 
