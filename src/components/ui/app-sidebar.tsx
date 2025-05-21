@@ -22,12 +22,13 @@ import {
   SidebarRail,
   useSidebar,
 } from '@/components/ui/sidebar'
-import { Avatar, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 // import AppLogo from '@/components/custom/logo'
 import { Separator } from '@/components/ui/separator'
 import { useAuth } from '@/hooks/use-auth'
 import { cn } from '@/lib/utils'
+import { getInitials } from '@/lib/formatters'
 
 const items = [
   {
@@ -136,6 +137,7 @@ function UserAvatar() {
     <div className="flex items-center">
       <Avatar className="size-12">
         <AvatarImage src={userAvatar} alt={user.name} />
+        <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
       </Avatar>
       {open && (
         <div className="ml-2">
