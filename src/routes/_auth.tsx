@@ -110,7 +110,9 @@ function Notifications() {
       <Link to="/notifications" className="text-gray-500 hover:text-gray-700">
         <Bell size={20} />
         {data?.unread && data.unread > 0 ? (
-          <span className="absolute -top-1 right-0 h-2 w-2 bg-rose-400 dark:bg-rose-600 rounded-full"></span>
+          <span className="absolute -top-1/2 translate-y-1/2 right-0 h-4 w-4 bg-rose-400 dark:bg-rose-600 rounded-full text-[10px] font-medium text-white flex items-center justify-center">
+            {data.unread < 10 ? data.unread : `9+`}
+          </span>
         ) : null}
       </Link>
     </div>
