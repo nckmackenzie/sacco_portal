@@ -28,6 +28,36 @@ export function errorHandler(error: unknown) {
   }
 }
 
+export function muatationErrorHandler(error: unknown) {
+  let errors = ''
+  if (isAxiosError(error)) {
+    switch (error.status) {
+      case 422:
+        errors = flattenErrors(error.response?.data.errors).join('\n')
+        break
+      case 404:
+        errors = 'Could not find the requested resource.'
+        break
+      case 302:
+        errors = error.response?.data.message
+        break
+      case 401:
+        router.navigate({ to: '/login', replace: true })
+        break
+      default:
+        errors = error.response?.data.error || error.response?.data.message
+        break
+    }
+  } else {
+    if (error instanceof Error) {
+      errors = error.message
+    } else {
+      errors = 'An unexpected error occurred.'
+    }
+  }
+  return errors
+}
+
 export function fetchErrorHandler(error: unknown) {
   if (isAxiosError(error)) {
     if (error.status === 404) {
