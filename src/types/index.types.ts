@@ -19,6 +19,10 @@ export interface WithId {
   id: string
 }
 
+export interface WithIdAndName extends WithId {
+  name: string
+}
+
 export interface Option {
   value: string
   label: string
