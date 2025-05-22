@@ -16,6 +16,7 @@ import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthTransactionsImport } from './routes/_auth/transactions'
 import { Route as AuthProfileImport } from './routes/_auth/profile'
+import { Route as AuthPendingRequestsImport } from './routes/_auth/pending-requests'
 import { Route as AuthNotificationsImport } from './routes/_auth/notifications'
 import { Route as AuthLoansImport } from './routes/_auth/loans'
 import { Route as AuthDepositsImport } from './routes/_auth/deposits'
@@ -52,6 +53,12 @@ const AuthTransactionsRoute = AuthTransactionsImport.update({
 const AuthProfileRoute = AuthProfileImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthPendingRequestsRoute = AuthPendingRequestsImport.update({
+  id: '/pending-requests',
+  path: '/pending-requests',
   getParentRoute: () => AuthRoute,
 } as any)
 
@@ -150,6 +157,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthNotificationsImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/pending-requests': {
+      id: '/_auth/pending-requests'
+      path: '/pending-requests'
+      fullPath: '/pending-requests'
+      preLoaderRoute: typeof AuthPendingRequestsImport
+      parentRoute: typeof AuthImport
+    }
     '/_auth/profile': {
       id: '/_auth/profile'
       path: '/profile'
@@ -207,6 +221,7 @@ interface AuthRouteChildren {
   AuthDepositsRoute: typeof AuthDepositsRoute
   AuthLoansRoute: typeof AuthLoansRoute
   AuthNotificationsRoute: typeof AuthNotificationsRoute
+  AuthPendingRequestsRoute: typeof AuthPendingRequestsRoute
   AuthProfileRoute: typeof AuthProfileRoute
   AuthTransactionsRoute: typeof AuthTransactionsRoute
   AuthLoansLoanIdRoute: typeof AuthLoansLoanIdRouteWithChildren
@@ -218,6 +233,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthDepositsRoute: AuthDepositsRoute,
   AuthLoansRoute: AuthLoansRoute,
   AuthNotificationsRoute: AuthNotificationsRoute,
+  AuthPendingRequestsRoute: AuthPendingRequestsRoute,
   AuthProfileRoute: AuthProfileRoute,
   AuthTransactionsRoute: AuthTransactionsRoute,
   AuthLoansLoanIdRoute: AuthLoansLoanIdRouteWithChildren,
@@ -234,6 +250,7 @@ export interface FileRoutesByFullPath {
   '/deposits': typeof AuthDepositsRoute
   '/loans': typeof AuthLoansRoute
   '/notifications': typeof AuthNotificationsRoute
+  '/pending-requests': typeof AuthPendingRequestsRoute
   '/profile': typeof AuthProfileRoute
   '/transactions': typeof AuthTransactionsRoute
   '/loans/$loanId': typeof AuthLoansLoanIdRouteWithChildren
@@ -249,6 +266,7 @@ export interface FileRoutesByTo {
   '/deposits': typeof AuthDepositsRoute
   '/loans': typeof AuthLoansRoute
   '/notifications': typeof AuthNotificationsRoute
+  '/pending-requests': typeof AuthPendingRequestsRoute
   '/profile': typeof AuthProfileRoute
   '/transactions': typeof AuthTransactionsRoute
   '/loans/$loanId': typeof AuthLoansLoanIdRouteWithChildren
@@ -265,6 +283,7 @@ export interface FileRoutesById {
   '/_auth/deposits': typeof AuthDepositsRoute
   '/_auth/loans': typeof AuthLoansRoute
   '/_auth/notifications': typeof AuthNotificationsRoute
+  '/_auth/pending-requests': typeof AuthPendingRequestsRoute
   '/_auth/profile': typeof AuthProfileRoute
   '/_auth/transactions': typeof AuthTransactionsRoute
   '/_auth/loans_/$loanId': typeof AuthLoansLoanIdRouteWithChildren
@@ -282,6 +301,7 @@ export interface FileRouteTypes {
     | '/deposits'
     | '/loans'
     | '/notifications'
+    | '/pending-requests'
     | '/profile'
     | '/transactions'
     | '/loans/$loanId'
@@ -296,6 +316,7 @@ export interface FileRouteTypes {
     | '/deposits'
     | '/loans'
     | '/notifications'
+    | '/pending-requests'
     | '/profile'
     | '/transactions'
     | '/loans/$loanId'
@@ -310,6 +331,7 @@ export interface FileRouteTypes {
     | '/_auth/deposits'
     | '/_auth/loans'
     | '/_auth/notifications'
+    | '/_auth/pending-requests'
     | '/_auth/profile'
     | '/_auth/transactions'
     | '/_auth/loans_/$loanId'
@@ -355,6 +377,7 @@ export const routeTree = rootRoute
         "/_auth/deposits",
         "/_auth/loans",
         "/_auth/notifications",
+        "/_auth/pending-requests",
         "/_auth/profile",
         "/_auth/transactions",
         "/_auth/loans_/$loanId",
@@ -378,6 +401,10 @@ export const routeTree = rootRoute
     },
     "/_auth/notifications": {
       "filePath": "_auth/notifications.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/pending-requests": {
+      "filePath": "_auth/pending-requests.tsx",
       "parent": "/_auth"
     },
     "/_auth/profile": {
