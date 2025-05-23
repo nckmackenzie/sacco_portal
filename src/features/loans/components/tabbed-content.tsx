@@ -315,7 +315,7 @@ function Guarantors({
                   ))}
                 </TableBody>
               </Table>
-              <div className="block md:hidden">
+              <div className="block md:hidden space-y-4">
                 {guarantors.map(({ guarantingAmount, member, status }) => (
                   <Card
                     key={member.id}
