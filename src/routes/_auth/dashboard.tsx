@@ -1,6 +1,6 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { useSuspenseQuery } from '@tanstack/react-query'
-import { useDocumentTitle } from '@/hooks/use-title'
+import clsx from 'clsx'
 
 import { ErrorComponent } from '@/components/custom/error'
 import { dashboardQueryOptions } from '@/features/dashboard/services/query-options'
@@ -13,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { useDocumentTitle } from '@/hooks/use-title'
 import { formatCurrency, formatDate, getLoanStatus } from '@/lib/formatters'
 import { Progress } from '@/components/ui/progress'
 import { LoanStatus } from '@/features/dashboard/components/loan-status'
@@ -99,8 +100,20 @@ function RouteComponent() {
                   const loanProgress = Math.round(
                     ((loanAmount - loanBalance) / loanAmount) * 100,
                   )
+                  const status = getLoanStatus(
+                    loanStatus,
+                    completedAt ? new Date(completedAt) : null,
+                    nextDueDate ? new Date(nextDueDate) : null,
+                    loanBalance || 0,
+                    writtenOff,
+                  )
                   return (
-                    <div key={id} className="rounded-md border p-4">
+                    <div
+                      key={id}
+                      className={clsx('rounded-md border p-4', {
+                        'border-l-4 border-l-error': status === 'overdue',
+                      })}
+                    >
                       <div className="mb-2 flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <div>
@@ -109,15 +122,7 @@ function RouteComponent() {
                               {purpose}
                             </p>
                           </div>
-                          <LoanStatus
-                            status={getLoanStatus(
-                              loanStatus,
-                              completedAt,
-                              nextDueDate,
-                              loanBalance,
-                              writtenOff,
-                            )}
-                          />
+                          <LoanStatus status={status} />
                         </div>
                         <div className="text-right">
                           <p className="font-medium">

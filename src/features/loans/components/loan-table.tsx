@@ -110,16 +110,16 @@ export default function LoanTable({ data }: { data: Array<Loan> }) {
             loanBalance,
           },
         },
-      }) =>
-        LoanStatus({
-          status: getLoanStatus(
-            loanStatus,
-            completedAt,
-            nextDueDate,
-            loanBalance,
-            writtenOff,
-          ),
-        }),
+      }) => {
+        const status = getLoanStatus(
+          loanStatus,
+          completedAt ? new Date(completedAt) : null,
+          nextDueDate ? new Date(nextDueDate) : null,
+          loanBalance || 0,
+          writtenOff,
+        )
+        return <LoanStatus status={status} />
+      },
     },
     {
       id: 'action',
