@@ -4,7 +4,7 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { DownloadCloudIcon, PlusIcon } from 'lucide-react'
+import { DownloadCloudIcon, InfoIcon, PlusIcon } from 'lucide-react'
 import { Loader } from '@/components/custom/spinner'
 import { Button } from '@/components/ui/button'
 import Search from '@/components/custom/search'
@@ -36,6 +36,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { env } from '@/env'
 
 export const Route = createFileRoute('/_auth/deposits')({
   component: RouteComponent,
@@ -174,7 +175,16 @@ function NewDeposit() {
                 pin when prompted to complete the transaction.
               </CredenzaDescription>
             </CredenzaHeader>
-            <CredenzaBody>
+            <CredenzaBody className="space-y-6">
+              {env.VITE_APP_ALLOW_MPESA === 'false' && (
+                <div className="rounded-md bg-warning p-4  text-warning-foreground flex gap-2">
+                  <InfoIcon size={24} className="shrink-0" />
+                  <span className="text-sm">
+                    <strong>Important: For Testing Purposes Only</strong>.MPESA
+                    not integrated in this environment.
+                  </span>
+                </div>
+              )}
               <FormField
                 control={form.control}
                 name="amount"
