@@ -52,3 +52,40 @@ export const loanFormSchema = z
       }
     },
   )
+
+export const loanPaymentFormSchema = z
+  .object({
+    loanId: z.string().trim().min(1, 'Loan is required'),
+    principalAmount: z.coerce
+      .number({
+        required_error: 'Enter principal amount',
+        invalid_type_error: 'Enter valid amount',
+      })
+      .min(1, 'Principal amount is required'),
+    interestAmount: z.coerce
+      .number({ invalid_type_error: 'Enter valid amount' })
+      .optional(),
+    paymentMethod: z.enum(['cash', 'mpesa', 'cheque', 'bank'], {
+      required_error: 'Select payment method',
+      invalid_type_error: 'Select payment method',
+    }),
+    penaltyAmount: z.coerce.number().optional(),
+    insurance: z.coerce.number().optional(),
+    amount: requiredNumberSchemaEntry('Enter amount'),
+  })
+  .superRefine(({ insurance, penaltyAmount }, ctx) => {
+    if (insurance && insurance < 0) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['insurance'],
+        message: 'Insurance cannot be negative',
+      })
+    }
+    if (penaltyAmount && penaltyAmount < 0) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['penaltyAmount'],
+        message: 'Penalty cannot be negative',
+      })
+    }
+  })
