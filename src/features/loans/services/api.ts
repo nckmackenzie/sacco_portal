@@ -1,6 +1,7 @@
-import type { Loan } from '@/features/loans/utils/loans.type'
+import type { Loan, LoanDetailed } from '@/features/loans/utils/loans.type'
 import type { LoanStatus } from '@/routes/_auth/loans'
 import axios from '@/lib/api/axios'
+import { fetchErrorHandler } from '@/lib/formatters'
 
 interface FetchLoansParams {
   q?: string
@@ -59,7 +60,18 @@ export async function fetchLoans(
 
     return data
   } catch (error) {
-    console.error('Error fetching loans:', error)
-    throw new Error('Failed to fetch loans')
+    const err = fetchErrorHandler(error)
+    throw new Error(err)
+  }
+}
+
+export async function fetchLoan(id: string): Promise<{ data: LoanDetailed }> {
+  try {
+    const { data } = await axios(`/api/loans/${id}/view`)
+
+    return data
+  } catch (error) {
+    const err = fetchErrorHandler(error)
+    throw new Error(err)
   }
 }
