@@ -15,6 +15,7 @@ export const env = createEnv({
   client: {
     VITE_APP_TITLE: z.string().min(1).optional(),
     VITE_APP_API_URL: z.string().min(1),
+    VITE_APP_ALLOW_MPESA: z.enum(['true', 'false']),
   },
 
   /**
