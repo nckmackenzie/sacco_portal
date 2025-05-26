@@ -3,7 +3,6 @@ import {
   Link,
   Outlet,
   createFileRoute,
-  useLocation,
   useNavigate,
 } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
@@ -21,26 +20,26 @@ import { cn } from '@/lib/utils'
 import { useTheme } from '@/components/providers/theme-provider'
 import { notificationsOptions } from '@/services/query-options'
 
-const getPageTitle = (location: string) => {
-  switch (location) {
-    case '/dashboard':
-      return 'Dashboard'
-    case '/deposits':
-      return 'Deposits'
-    case '/loans':
-      return 'Loans'
-    case '/withdrawals':
-      return 'Withdrawals'
-    case '/transactions':
-      return 'Transactions'
-    case '/notifications':
-      return 'Notifications'
-    case '/profile':
-      return 'Profile'
-    default:
-      return 'Dashboard'
-  }
-}
+// const getPageTitle = (location: string) => {
+//   switch (location) {
+//     case '/dashboard':
+//       return 'Dashboard'
+//     case '/deposits':
+//       return 'Deposits'
+//     case '/loans':
+//       return 'Loans'
+//     case '/withdrawals':
+//       return 'Withdrawals'
+//     case '/transactions':
+//       return 'Transactions'
+//     case '/notifications':
+//       return 'Notifications'
+//     case '/profile':
+//       return 'Profile'
+//     default:
+//       return 'Dashboard'
+//   }
+// }
 
 export const Route = createFileRoute('/_auth')({
   loader: ({ context }) =>
@@ -50,7 +49,7 @@ export const Route = createFileRoute('/_auth')({
 
 function RouteComponent() {
   const { isAuthenticated, isLoading } = useAuth()
-  const slocation = useLocation()
+
   const { theme, setTheme } = useTheme()
   const navigate = useNavigate()
 
@@ -72,7 +71,7 @@ function RouteComponent() {
           <div className="flex items-center gap-2 ">
             <SidebarTrigger className="-ml-1 block md:hidden" />
 
-            <h2>{getPageTitle(slocation.pathname)}</h2>
+            {/* <h2>{getPageTitle(slocation.pathname)}</h2> */}
           </div>
           <div className="ml-auto flex items-center gap-2">
             <Button
