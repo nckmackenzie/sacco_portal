@@ -1,8 +1,10 @@
+import React from 'react'
 import { Link } from '@tanstack/react-router'
 import { CreditCardIcon, FileText, InfoIcon, MoreVertical } from 'lucide-react'
 import clsx from 'clsx'
 import type { ColumnDef } from '@tanstack/react-table'
 import type { Loan } from '@/features/loans/utils/loans.type'
+import type { LoanPaymentModalProps } from '@/features/loans/components/loan-payment-modal'
 import { DataTable } from '@/components/custom/datatable'
 import { Progress } from '@/components/ui/progress'
 import { formatCurrency, getLoanStatus } from '@/lib/formatters'
@@ -13,6 +15,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { LoanPaymentModal } from '@/features/loans/components/loan-payment-modal'
+import { interestCalculator } from '@/lib/utils'
 
 export function loanRef(
   loanAlias: string,
@@ -25,6 +29,20 @@ export function loanRef(
 }
 
 export default function LoanTable({ data }: { data: Array<Loan> }) {
+  const [loanDetails, setLoanDetails] = React.useState<Omit<
+    LoanPaymentModalProps,
+    'isOpen' | 'onOpenChange'
+  > | null>(null)
+  const [open, setOpen] = React.useState(false)
+  const handleOpen = (
+    loanId: string,
+    loanInterest: number,
+    monthlyPayment: number,
+    nextDueDate: string | Date,
+  ) => {
+    setLoanDetails({ loanId, loanInterest, monthlyPayment, nextDueDate })
+    setOpen(true)
+  }
   const columns: Array<ColumnDef<Loan>> = [
     {
       accessorKey: 'loanId',
@@ -125,7 +143,13 @@ export default function LoanTable({ data }: { data: Array<Loan> }) {
       id: 'action',
       cell: ({
         row: {
-          original: { loanStatus, id },
+          original: {
+            loanStatus,
+            id,
+            repaymentPeriod,
+            loanAmount,
+            nextDueDate,
+          },
         },
       }) => (
         <DropdownMenu>
@@ -139,7 +163,20 @@ export default function LoanTable({ data }: { data: Array<Loan> }) {
             {(loanStatus === 'approved' || loanStatus === 'repaid') && (
               <>
                 {loanStatus === 'approved' && (
-                  <DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      const interest = interestCalculator(
+                        repaymentPeriod,
+                        loanAmount,
+                      )
+                      handleOpen(
+                        id,
+                        +interest,
+                        Math.round(loanAmount / repaymentPeriod),
+                        nextDueDate ? new Date(nextDueDate) : new Date(),
+                      )
+                    }}
+                  >
                     <CreditCardIcon className="icon" aria-hidden />
                     <span>Make Payment</span>
                   </DropdownMenuItem>
@@ -163,5 +200,19 @@ export default function LoanTable({ data }: { data: Array<Loan> }) {
       ),
     },
   ]
-  return <DataTable columns={columns} data={data} />
+  return (
+    <>
+      <DataTable columns={columns} data={data} />
+      {loanDetails && (
+        <LoanPaymentModal
+          isOpen={open}
+          onOpenChange={setOpen}
+          loanId={loanDetails.loanId}
+          loanInterest={loanDetails.loanInterest}
+          monthlyPayment={loanDetails.monthlyPayment}
+          nextDueDate={loanDetails.nextDueDate}
+        />
+      )}
+    </>
+  )
 }
