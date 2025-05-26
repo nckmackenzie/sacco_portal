@@ -122,6 +122,8 @@ code {
   --warning-foreground: oklch(0.77 0.16 70);
   --error: oklch(0.94 0.03 13);
   --error-foreground: oklch(0.66 0.21 354);
+  --export: oklch(69.53% 0.233 284.87);
+  --export-foreground: oklch(0% 0 0);
 }
 
 .dark {
@@ -167,6 +169,8 @@ code {
   --warning-foreground: oklch(0.84 0.16 84);
   --error: oklch(0.94 0.03 13);
   --error-foreground: oklch(0.41 0.15 10);
+  --export: oklch(61.34% 0.246 285.13);
+  --export-foreground: oklch(100% 0 0);
 }
 
 @theme inline {
@@ -216,6 +220,8 @@ code {
   --color-warning-foreground: var(--warning-foreground);
   --color-error: var(--error);
   --color-error-foreground: var(--error-foreground);
+  --color-export: var(--export);
+  --color-export-foreground: var(--export-foreground);
 }
 
 @layer base {
