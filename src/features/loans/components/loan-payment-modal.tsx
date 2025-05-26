@@ -28,7 +28,7 @@ import { calculatePayment } from '@/lib/utils'
 import { formatCurrency } from '@/lib/formatters'
 import { env } from '@/env'
 
-interface LoanPaymentModalProps {
+export interface LoanPaymentModalProps {
   loanId: string
   monthlyPayment: number
   loanInterest: number
