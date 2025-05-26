@@ -68,7 +68,7 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {}
 export function AppSidebar({ ...props }: AppSidebarProps) {
   const { logout } = useAuth()
   const location = useLocation()
-  const { open } = useSidebar()
+  const { open, setOpenMobile, openMobile } = useSidebar()
   return (
     <Sidebar collapsible="icon" {...props} variant="inset">
       <SidebarHeader className="h-16 flex  justify-center">
@@ -83,6 +83,7 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
+                    onClick={() => setOpenMobile(!openMobile)}
                     className={cn(
                       'transition-colors hover:bg-background hover:*:foreground',
                       {
