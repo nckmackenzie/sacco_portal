@@ -23,7 +23,7 @@ import { Route as AuthDepositsImport } from './routes/_auth/deposits'
 import { Route as AuthDashboardImport } from './routes/_auth/dashboard'
 import { Route as AuthLoansNewImport } from './routes/_auth/loans_.new'
 import { Route as AuthLoansLoanIdImport } from './routes/_auth/loans_.$loanId'
-import { Route as AuthLoansLoanIdStatementImport } from './routes/_auth/loans_.$loanId.statement'
+import { Route as AuthLoansLoanIdStatementImport } from './routes/_auth/loans_.$loanId_.statement'
 
 // Create/Update Routes
 
@@ -99,9 +99,9 @@ const AuthLoansLoanIdRoute = AuthLoansLoanIdImport.update({
 } as any)
 
 const AuthLoansLoanIdStatementRoute = AuthLoansLoanIdStatementImport.update({
-  id: '/statement',
-  path: '/statement',
-  getParentRoute: () => AuthLoansLoanIdRoute,
+  id: '/loans_/$loanId_/statement',
+  path: '/loans/$loanId/statement',
+  getParentRoute: () => AuthRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -192,29 +192,17 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoansNewImport
       parentRoute: typeof AuthImport
     }
-    '/_auth/loans_/$loanId/statement': {
-      id: '/_auth/loans_/$loanId/statement'
-      path: '/statement'
+    '/_auth/loans_/$loanId_/statement': {
+      id: '/_auth/loans_/$loanId_/statement'
+      path: '/loans/$loanId/statement'
       fullPath: '/loans/$loanId/statement'
       preLoaderRoute: typeof AuthLoansLoanIdStatementImport
-      parentRoute: typeof AuthLoansLoanIdImport
+      parentRoute: typeof AuthImport
     }
   }
 }
 
 // Create and export the route tree
-
-interface AuthLoansLoanIdRouteChildren {
-  AuthLoansLoanIdStatementRoute: typeof AuthLoansLoanIdStatementRoute
-}
-
-const AuthLoansLoanIdRouteChildren: AuthLoansLoanIdRouteChildren = {
-  AuthLoansLoanIdStatementRoute: AuthLoansLoanIdStatementRoute,
-}
-
-const AuthLoansLoanIdRouteWithChildren = AuthLoansLoanIdRoute._addFileChildren(
-  AuthLoansLoanIdRouteChildren,
-)
 
 interface AuthRouteChildren {
   AuthDashboardRoute: typeof AuthDashboardRoute
@@ -224,8 +212,9 @@ interface AuthRouteChildren {
   AuthPendingRequestsRoute: typeof AuthPendingRequestsRoute
   AuthProfileRoute: typeof AuthProfileRoute
   AuthTransactionsRoute: typeof AuthTransactionsRoute
-  AuthLoansLoanIdRoute: typeof AuthLoansLoanIdRouteWithChildren
+  AuthLoansLoanIdRoute: typeof AuthLoansLoanIdRoute
   AuthLoansNewRoute: typeof AuthLoansNewRoute
+  AuthLoansLoanIdStatementRoute: typeof AuthLoansLoanIdStatementRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
@@ -236,8 +225,9 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthPendingRequestsRoute: AuthPendingRequestsRoute,
   AuthProfileRoute: AuthProfileRoute,
   AuthTransactionsRoute: AuthTransactionsRoute,
-  AuthLoansLoanIdRoute: AuthLoansLoanIdRouteWithChildren,
+  AuthLoansLoanIdRoute: AuthLoansLoanIdRoute,
   AuthLoansNewRoute: AuthLoansNewRoute,
+  AuthLoansLoanIdStatementRoute: AuthLoansLoanIdStatementRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
@@ -253,7 +243,7 @@ export interface FileRoutesByFullPath {
   '/pending-requests': typeof AuthPendingRequestsRoute
   '/profile': typeof AuthProfileRoute
   '/transactions': typeof AuthTransactionsRoute
-  '/loans/$loanId': typeof AuthLoansLoanIdRouteWithChildren
+  '/loans/$loanId': typeof AuthLoansLoanIdRoute
   '/loans/new': typeof AuthLoansNewRoute
   '/loans/$loanId/statement': typeof AuthLoansLoanIdStatementRoute
 }
@@ -269,7 +259,7 @@ export interface FileRoutesByTo {
   '/pending-requests': typeof AuthPendingRequestsRoute
   '/profile': typeof AuthProfileRoute
   '/transactions': typeof AuthTransactionsRoute
-  '/loans/$loanId': typeof AuthLoansLoanIdRouteWithChildren
+  '/loans/$loanId': typeof AuthLoansLoanIdRoute
   '/loans/new': typeof AuthLoansNewRoute
   '/loans/$loanId/statement': typeof AuthLoansLoanIdStatementRoute
 }
@@ -286,9 +276,9 @@ export interface FileRoutesById {
   '/_auth/pending-requests': typeof AuthPendingRequestsRoute
   '/_auth/profile': typeof AuthProfileRoute
   '/_auth/transactions': typeof AuthTransactionsRoute
-  '/_auth/loans_/$loanId': typeof AuthLoansLoanIdRouteWithChildren
+  '/_auth/loans_/$loanId': typeof AuthLoansLoanIdRoute
   '/_auth/loans_/new': typeof AuthLoansNewRoute
-  '/_auth/loans_/$loanId/statement': typeof AuthLoansLoanIdStatementRoute
+  '/_auth/loans_/$loanId_/statement': typeof AuthLoansLoanIdStatementRoute
 }
 
 export interface FileRouteTypes {
@@ -336,7 +326,7 @@ export interface FileRouteTypes {
     | '/_auth/transactions'
     | '/_auth/loans_/$loanId'
     | '/_auth/loans_/new'
-    | '/_auth/loans_/$loanId/statement'
+    | '/_auth/loans_/$loanId_/statement'
   fileRoutesById: FileRoutesById
 }
 
@@ -381,7 +371,8 @@ export const routeTree = rootRoute
         "/_auth/profile",
         "/_auth/transactions",
         "/_auth/loans_/$loanId",
-        "/_auth/loans_/new"
+        "/_auth/loans_/new",
+        "/_auth/loans_/$loanId_/statement"
       ]
     },
     "/login": {
@@ -417,18 +408,15 @@ export const routeTree = rootRoute
     },
     "/_auth/loans_/$loanId": {
       "filePath": "_auth/loans_.$loanId.tsx",
-      "parent": "/_auth",
-      "children": [
-        "/_auth/loans_/$loanId/statement"
-      ]
+      "parent": "/_auth"
     },
     "/_auth/loans_/new": {
       "filePath": "_auth/loans_.new.tsx",
       "parent": "/_auth"
     },
-    "/_auth/loans_/$loanId/statement": {
-      "filePath": "_auth/loans_.$loanId.statement.tsx",
-      "parent": "/_auth/loans_/$loanId"
+    "/_auth/loans_/$loanId_/statement": {
+      "filePath": "_auth/loans_.$loanId_.statement.tsx",
+      "parent": "/_auth"
     }
   }
 }
