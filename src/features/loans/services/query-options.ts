@@ -2,6 +2,7 @@ import { queryOptions } from '@tanstack/react-query'
 import type { LoanStatus } from '@/routes/_auth/loans'
 import {
   fetchLoan,
+  fetchLoanStatement,
   fetchLoanTypes,
   fetchLoans,
   fetchMemberLoanStatus,
@@ -33,4 +34,10 @@ export const loanQueryOptions = (id: string) =>
   queryOptions({
     queryKey: ['loans', id],
     queryFn: () => fetchLoan(id),
+  })
+
+export const loanStatementQueryOptions = (id: string) =>
+  queryOptions({
+    queryKey: ['loans', id, 'statement'],
+    queryFn: () => fetchLoanStatement(id),
   })
