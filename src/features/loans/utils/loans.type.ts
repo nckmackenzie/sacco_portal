@@ -58,5 +58,19 @@ export interface LoanDetailed extends Omit<Loan, 'loanType'> {
   }>
 }
 
+export interface LoanStatement {
+  loan: {
+    loanId: number
+    memberName: string
+    loanType: string
+    loanAlias: string
+    loanAmount: number
+    applicationDate: Date
+    currentBalance: number
+    totalPaid: number
+  }
+  payments: Array<LoanDetailed['payments'][number] & { balance: number }>
+}
+
 export type LoanApplicationFormValues = z.infer<typeof loanFormSchema>
 export type LoanPaymentFormValues = z.infer<typeof loanPaymentFormSchema>
