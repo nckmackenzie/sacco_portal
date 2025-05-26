@@ -81,7 +81,7 @@ function RouteComponent() {
         </div>
 
         <Button
-          variant="secondary"
+          variant="export"
           className="w-full sm:w-auto"
           onClick={downloadStatement}
           disabled={downloading}

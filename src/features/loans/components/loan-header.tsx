@@ -49,7 +49,7 @@ export function Header({
         <div className="flex gap-2">
           {status !== 'pending' && status !== 'rejected' && (
             <>
-              <Button variant="outline" size="sm" className="gap-1" asChild>
+              <Button variant="export" size="sm" className="gap-1" asChild>
                 <Link to="/loans/$loanId/statement" params={{ loanId: id }}>
                   <FileText aria-hidden className="icon" />
                   <span>Statement</span>
