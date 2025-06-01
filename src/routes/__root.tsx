@@ -15,7 +15,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: () => (
     <>
       <ThemeProvider defaultTheme="light" storageKey="sacco-ui-theme">
-        <main className="h-dvh container">
+        <main className="h-dvh">
           <Outlet />
           <Toaster />
         </main>
