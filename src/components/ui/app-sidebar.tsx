@@ -46,11 +46,11 @@ const items = [
     icon: CreditCard,
     url: '/loans',
   },
-  // {
-  //   title: 'Transactions',
-  //   icon: BarChart4,
-  //   url: '/transactions',
-  // },
+  {
+    title: 'Transactions',
+    icon: BarChart4,
+    url: '/transactions',
+  },
   {
     title: 'Notifications',
     icon: Bell,
