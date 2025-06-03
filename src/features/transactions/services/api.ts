@@ -10,7 +10,7 @@ export async function fetchAllTransactions(
   }
 
   try {
-    const { data } = await axios(`/api/transactions/?${params.toString()}`)
+    const { data } = await axios(`/api/activities/?${params.toString()}`)
 
     return data
   } catch (error) {
